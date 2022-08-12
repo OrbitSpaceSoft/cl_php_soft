@@ -1,0 +1,25 @@
+{
+  "name": "orbitspace/phpsoft",
+  "type": "library",
+  "license": "MIT",
+  "description": "php library for working with Orbit Space API",
+  "authors": [
+    {
+      "name": "Orbit Space",
+      "email": "support@orbit-space.ru",
+      "homepage": "https://orbit-space.ru"
+    }
+  ],
+
+  "require": {
+    "php" : ">=7",
+    "php-curl-class/php-curl-class": "^8.7",
+    "joshcam/mysqli-database-class": "dev-master"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "OrbitSpaceSoft\\": "src"
+    }
+  }
+}
