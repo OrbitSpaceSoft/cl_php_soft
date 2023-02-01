@@ -125,8 +125,9 @@ class Connector extends \OrbitSpaceSoft\BaseObject
                     ];
 
                     $this->last_error = $this->curl->errorCode . ': ' .$message;
-                    return false;
+                    return $this->curl->response;
                 }
+                //var_dump($this->curl->response);
                 return $this->curl->response;
 
             default: return false;
@@ -136,8 +137,6 @@ class Connector extends \OrbitSpaceSoft\BaseObject
     public function result( $resp )
     {
         $resp = helpers\JsonHelper::object_to_array($resp);
-        //echo "<pre>".print_r($this->response_last_error,true)."</pre>";die;
-
         if( !isset($resp['status']) || $resp['status'] === self::STATUS_ERROR )
         {
             if( ( ( isset($this->config->application['decrypt_errors']) && $this->config->application['decrypt_errors']) )

@@ -14,7 +14,7 @@ class Security extends \OrbitSpaceSoft\BaseObject
 
     public function hashSting( $text, $length = 32, $algo = 'sha256' )
     {
-        return substr( hash( $algo, $text, true ), 0, 32 );
+        return substr( hash( $algo, $text, true ), 0, $length );
     }
 
     public function shuffleString( $length = 32 )

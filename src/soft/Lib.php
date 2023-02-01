@@ -24,6 +24,11 @@ class Lib extends \OrbitSpaceSoft\BaseObject
         $this->token = $token;
     }
 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
     protected function request( array $where, string $link )
     {
         $res = $this->connector->result(

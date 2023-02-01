@@ -32,4 +32,14 @@ class IBoxes extends Lib
     {
         return $this->request($where, '/common/iboxes/addelement/');
     }
+
+    public function removeElement( array $where )
+    {
+        return $this->request($where, '/common/iboxes/removeelement/');
+    }
+
+    public function updateElement( array $where )
+    {
+        return $this->request($where, '/common/iboxes/updateelement/');
+    }
 }

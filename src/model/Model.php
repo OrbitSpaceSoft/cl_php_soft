@@ -34,7 +34,7 @@ abstract class Model extends \OrbitSpaceSoft\BaseObject
         return is_object($this->db) ? $this->db->trace : null;
     }
 
-    protected function createTable():bool
+    public function createTable():bool
     {
         $sql = 'CREATE TABLE '.$this->getTableName().' (';
 
@@ -89,15 +89,18 @@ abstract class Model extends \OrbitSpaceSoft\BaseObject
     public function connect( $connection_name = 'default' ): ?Model
     {
        if( !isset($this->config->db) && isset($this->config->db->{$connection_name}) )
+       {
            $this->last_error = 'DB config is not found';
+           return null;
+       }
 
        $this->db_config = $this->config->db[$connection_name];
        $this->db = $this->_connect( $this->db_config );
 
-       if( is_object( $this->db ) && !$this->checkTable( $this->getTableName() ) )
+       if( !is_object( $this->db ) )
        {
-           if( !$this->createTable() )
-               return null;
+           $this->last_error = 'DB object error when creating an object';
+           return null;
        }
 
        return $this;
@@ -296,7 +299,7 @@ abstract class Model extends \OrbitSpaceSoft\BaseObject
             ]);
     }
 
-    protected function checkTable ( $name=false )
+    public function checkTable ( $name=false )
     {
         if( !$name || is_null($name) ) return false;
         return !is_null( $this->db->rawQueryValue("SHOW TABLES FROM ".$this->db_config['database']." like '".$name."'") );
