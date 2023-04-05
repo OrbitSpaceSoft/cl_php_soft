@@ -5,6 +5,9 @@ use OrbitSpaceSoft\helpers;
 
 class Lib extends \OrbitSpaceSoft\BaseObject
 {
+    /**
+     * @var \OrbitSpaceSoft\soft\Connector
+     */
     protected $connector;
     protected $token;
 
@@ -13,9 +16,11 @@ class Lib extends \OrbitSpaceSoft\BaseObject
         $this->connector = new Connector($this->config);
     }
 
-    public function debug($flag=false)
+    public function debug($debug_result = false, $die=false)
     {
-        $this->connector->debug = $flag;
+        $this->connector->debug = true;
+        $this->connector->debug_result = $debug_result;
+        $this->connector->die = $die;
         return $this;
     }
 
