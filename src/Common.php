@@ -6,17 +6,40 @@ use OrbitSpaceSoft\install;
 
 class Common
 {
+    /**
+     * @var soft\Config
+     */
     public $config;
+    /**
+     * @var soft\Connector
+     */
     public $connector;
+    /**
+     * @var soft\User
+     */
     public $user;
+    /**
+     * @var soft\IBoxes
+     */
     public $iboxes;
+    /**
+     * @var soft\Notification
+     */
     public $notification;
+    /**
+     * @var soft\Space
+     */
     public $space;
+    /**
+     * @var soft\Uploader
+     */
     public $uploader;
 
     public $last_error;
+    /**
+     * @var install\Installer
+     */
     public $installer;
-
 
     protected $token;
     protected $token_refresh;
@@ -35,18 +58,28 @@ class Common
         $this->installer = new install\Installer($this->config);
     }
 
-    public function debug($flag=false)
+    /**
+     * @param bool $flag
+     * @return $this
+     */
+    public function debug($debug_result = false, $die=false)
     {
-        $this->connector->debug = $flag;
-        $this->user->debug($flag);
-        $this->iboxes->debug($flag);
-        $this->notification->debug($flag);
-        $this->space->debug($flag);
-        $this->uploader->debug($flag);
+        $this->connector->debug = true;
+        $this->connector->debug_result = $debug_result;
+        $this->user->debug($debug_result, $die);
+        $this->iboxes->debug($debug_result, $die);
+        $this->notification->debug($debug_result, $die);
+        $this->space->debug($debug_result, $die);
+        $this->uploader->debug($debug_result, $die);
 
         return $this;
     }
 
+    /**
+     * @param $token
+     * @param $token_refresh
+     * @return $this
+     */
     public function setToken($token,$token_refresh)
     {
         $this->user->setToken($token);
@@ -61,6 +94,10 @@ class Common
         return $this;
     }
 
+    /**
+     * @param null $token
+     * @return bool
+     */
     public function ping( $token=null )
     {
         $token = is_null($token) ? $this->token : $token;
@@ -78,6 +115,11 @@ class Common
         ) !== false;
     }
 
+    /**
+     * @param array $where
+     * @param string $link
+     * @return array|bool
+     */
     public function request( array $where, string $link)
     {
         $res = $this->connector->result(

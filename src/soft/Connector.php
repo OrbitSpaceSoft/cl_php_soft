@@ -28,6 +28,9 @@ class Connector extends \OrbitSpaceSoft\BaseObject
     public $response_last_error=false;
     public $api_domain;
     public $debug = false;
+    public $debug_result= false;
+    public $die = false;
+
 
     protected $hash=false;
     protected $security;
@@ -93,6 +96,8 @@ class Connector extends \OrbitSpaceSoft\BaseObject
                 //'trace'=> debug_backtrace()
             ]);
 
+        if( $this->die ) die();
+
         switch ($method)
         {
             case self::METHOD_GET:
@@ -145,6 +150,9 @@ class Connector extends \OrbitSpaceSoft\BaseObject
             else
                 $this->response_last_error = isset($resp['error'])?$resp['error']:'Error';
 
+            if( $this->debug_result )
+                var_dump($this->response_last_error);
+
             return false;
         }
 
@@ -154,7 +162,10 @@ class Connector extends \OrbitSpaceSoft\BaseObject
             $_res = $this->security->openSslDecrypt($resp['data'], $this->hash);
         else $_res = $resp['data'];
 
-        return !is_array($_res) && helpers\JsonHelper::isJson( $_res ) ? helpers\JsonHelper::object_to_array( json_decode($_res) ) : $_res;
+        $return = !is_array($_res) && helpers\JsonHelper::isJson( $_res ) ? helpers\JsonHelper::object_to_array( json_decode($_res) ) : $_res;
+        if( $this->debug_result )
+            echo helpers\StringHelper::trace($return);
+        return $return;
     }
 
     public function createErrorMessage($code, $message)
